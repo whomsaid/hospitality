@@ -1,0 +1,1658 @@
+# MASTER PROMPT: PROFESSIONAL HOSPITAL MANAGEMENT SYSTEM
+
+## 1. PROJECT OVERVIEW
+
+Act as a senior full-stack software engineer, software architect, database designer, cybersecurity specialist, UI/UX designer, and technical instructor.
+
+Help me design and build a professional, secure, responsive, and fully functional Hospital Management System (HMS) using:
+
+**Frontend**
+- React.js
+- JavaScript
+- HTML5
+- CSS3
+- React Router
+- Axios
+- Responsive design for desktop, tablet, and mobile devices
+
+**Backend**
+- Node.js
+- Express.js
+- RESTful APIs
+- JavaScript
+- JWT or secure session-based authentication
+- Role-based access control
+
+**Database**
+- MySQL
+- mysql2 for database connectivity
+- Proper primary keys and foreign keys
+- Transactions where necessary
+- Database constraints and indexes
+
+**Development tools**
+- Visual Studio Code
+- XAMPP or another appropriate local MySQL setup
+- Postman for API testing
+- Git and GitHub for version control
+- npm for package management
+
+The application must be suitable for a professional healthcare organization, support multiple hospitals, and maintain patient information securely throughout the patient's healthcare journey.
+
+There must be **NO online payment gateway**. Billing and payments must be handled through recorded manual transactions.
+
+Teach me how to build the application step by step in simple English. Explain the purpose of every important file, folder, database table, API endpoint, and security mechanism.
+
+Avoid unnecessary advanced object-oriented programming, classes, and complicated abstractions. Prefer understandable, maintainable JavaScript code.
+
+Do not attempt to build the entire application in one enormous response. Divide the work into phases, complete and test each phase, and then continue.
+
+---
+
+# 2. MAIN OBJECTIVES
+
+The system must:
+
+1. Manage multiple hospitals from one platform.
+2. Provide separate dashboards for different user roles.
+3. Register new patients and identify returning patients.
+4. Retrieve existing patient information when a patient returns.
+5. Prevent duplicate patient records.
+6. Maintain patient medical history and visit history.
+7. Manage appointments and patient queues.
+8. Support patient reception and triage.
+9. Manage doctor consultations and clinical records.
+10. Manage laboratory requests, specimens, and results.
+11. Manage prescriptions and pharmacy inventory.
+12. Manage invoices, manual payments, and receipts.
+13. Manage patient discharge and visit completion.
+14. Support authorized access to patient information across hospitals.
+15. Generate operational, clinical, laboratory, pharmacy, and financial reports.
+16. Protect patient information through authentication and authorization.
+17. Maintain audit logs for important activities.
+18. Support notifications and follow-up appointments.
+19. Provide a modern, professional, responsive user interface.
+20. Allow future expansion without requiring the entire application to be rewritten.
+
+---
+
+# 3. USER ROLES AND PERMISSIONS
+
+Create the following seven main roles.
+
+Each role must have its own dashboard, navigation menu, permitted actions, and protected API endpoints.
+
+A user must never gain permission merely by changing a frontend URL or modifying a request in the browser.
+
+## 3.1 SUPER_ADMIN
+
+The Super Admin manages the overall platform.
+
+### Responsibilities
+- Create, update, activate, and deactivate hospital accounts.
+- Register hospital managers and assign them to hospitals.
+- Manage platform-wide settings.
+- View platform-wide operational statistics.
+- Monitor hospital activity.
+- Manage global account and security settings.
+- View audit logs according to platform permissions.
+- Monitor system health and important operational events.
+- Manage authorized support and access-control processes.
+
+### Dashboard
+Display:
+- Total registered hospitals.
+- Active and inactive hospitals.
+- Hospital managers.
+- Platform usage statistics.
+- Hospital activity summaries.
+- System alerts.
+- Recent administrative activity.
+- Security alerts.
+- Reports and settings.
+
+### Restrictions
+The Super Admin must not automatically receive unrestricted access to all patients' clinical records merely because the account is a Super Admin.
+
+Access to sensitive medical information must require an explicit, justified, and authorized permission.
+
+## 3.2 HOSPITAL_MANAGER
+
+The Hospital Manager manages an assigned hospital.
+
+### Responsibilities
+- Manage the hospital's operational information.
+- Register and manage authorized employees.
+- Assign employees to departments.
+- Manage departments and operational settings.
+- Monitor appointments, queues, and hospital activity.
+- View authorized operational reports.
+- Monitor laboratory, pharmacy, and financial operations.
+- Manage staff accounts and access within the assigned hospital.
+- Review audit reports permitted by their role.
+
+### Dashboard
+Display:
+- Total patients registered with the hospital.
+- Today's appointments.
+- Patients currently waiting.
+- Patients receiving treatment.
+- Completed visits.
+- Active employees.
+- Department summaries.
+- Laboratory activity.
+- Pharmacy stock alerts.
+- Financial summaries.
+- Operational reports.
+
+### Restrictions
+The Hospital Manager must not automatically be allowed to prescribe medication, change laboratory results, modify clinical notes, or perform accounting transactions unless explicitly granted the corresponding permissions.
+
+## 3.3 RECEPTIONIST
+
+The Receptionist manages patient reception and administrative registration.
+
+### Responsibilities
+- Search for existing patients.
+- Register new patients.
+- Identify returning patients.
+- Verify patient identity.
+- Update permitted demographic and contact information.
+- Create appointments.
+- Register patient arrival.
+- Create new visit records.
+- Manage reception queues.
+- Direct patients to triage or the appropriate department.
+- View permitted appointment and visit statuses.
+
+### Dashboard
+Display:
+- Today's appointments.
+- Patients expected to arrive.
+- Patients who have arrived.
+- Patients waiting for registration.
+- Current reception queue.
+- Recently registered patients.
+- Returning patients.
+- Appointment scheduling.
+- Search patient functionality.
+
+### Restrictions
+The Receptionist must not automatically access restricted clinical notes, modify diagnoses, validate laboratory results, change prescriptions, or perform unauthorized financial operations.
+
+## 3.4 PHARMACIST
+
+The Pharmacist manages prescribed medicines and pharmacy inventory.
+
+### Responsibilities
+- View authorized prescriptions.
+- Check prescription validity.
+- Dispense prescribed medicines.
+- Record quantities dispensed.
+- Record partial dispensing when permitted.
+- Track medicine stock.
+- Manage medicine batches.
+- Track expiration dates.
+- Receive authorized stock deliveries.
+- Record inventory movements.
+- Generate pharmacy reports.
+- Identify low-stock and expired medicines.
+- Maintain dispensing history.
+
+### Dashboard
+Display:
+- Pending prescriptions.
+- Prescriptions ready for dispensing.
+- Recently dispensed medicines.
+- Low-stock medicines.
+- Expiring medicine batches.
+- Expired stock alerts.
+- Inventory summaries.
+- Dispensing history.
+
+### Restrictions
+The Pharmacist must not independently alter a doctor's prescription or dispense medicines without following the required authorization and safety checks.
+
+## 3.5 LAB_TECHNICIAN
+
+The Laboratory Technician manages laboratory testing.
+
+### Responsibilities
+- View authorized laboratory requests.
+- Accept test requests.
+- Record specimen collection.
+- Track specimen identification and status.
+- Record laboratory results.
+- Validate results when authorized.
+- Release approved results.
+- Record rejected or unusable specimens.
+- Request recollection when necessary.
+- Flag critical results.
+- Maintain result history.
+- Generate laboratory reports.
+
+### Dashboard
+Display:
+- New laboratory requests.
+- Pending specimen collection.
+- Samples awaiting processing.
+- Tests in progress.
+- Results awaiting validation.
+- Released results.
+- Critical-result alerts.
+- Rejected specimens.
+- Laboratory activity reports.
+
+### Restrictions
+A laboratory technician must not alter a result after release without a controlled correction process and an audit trail.
+
+Only appropriately authorized personnel may validate or release results.
+
+## 3.6 ACCOUNTANT
+
+The Accountant manages financial records.
+
+### Responsibilities
+- Create and review invoices.
+- Record authorized charges.
+- Record manual payments.
+- Record partial payments.
+- Calculate outstanding balances.
+- Issue receipts.
+- Record authorized refunds.
+- Record authorized financial adjustments.
+- Review payment histories.
+- Generate financial reports.
+- Reconcile recorded transactions.
+
+### Dashboard
+Display:
+- Today's invoices.
+- Total recorded payments.
+- Outstanding balances.
+- Partially paid invoices.
+- Unpaid invoices.
+- Refund requests.
+- Recent transactions.
+- Revenue summaries.
+- Financial reports.
+
+### Restrictions
+- No online payment gateway.
+- No deleting financial transactions to conceal activity.
+- Refunds and adjustments require appropriate permissions.
+- The Accountant must not access restricted clinical notes simply because financial records refer to a patient.
+
+## 3.7 PATIENT
+
+Patients can access their own permitted information.
+
+### Responsibilities
+- View and update permitted personal information.
+- Request appointments.
+- View their appointments.
+- View permitted visit summaries.
+- View released laboratory results.
+- View prescriptions.
+- View follow-up instructions.
+- View invoices and payment receipts.
+- Review their own available medical history.
+- Receive notifications.
+- Request corrections to personal information through an authorized process.
+
+### Dashboard
+Display:
+- Upcoming appointments.
+- Previous visits.
+- Available released laboratory results.
+- Prescriptions.
+- Follow-up appointments.
+- Medical history available to the patient.
+- Invoices and receipts.
+- Notifications.
+- Profile settings.
+
+### Restrictions
+A patient must never access another patient's records by changing an identifier in a URL, API request, or frontend form.
+
+---
+
+# 4. AUTHENTICATION AND AUTHORIZATION
+
+Implement secure authentication and role-based access control.
+
+## Authentication requirements
+- Login.
+- Logout.
+- Password hashing with bcrypt or an appropriate password-hashing library.
+- Secure password verification.
+- Password reset through a properly secured process.
+- Account activation and deactivation.
+- Login-attempt monitoring.
+- Rate limiting.
+- Session expiration or token expiration.
+- Appropriate authentication error handling.
+- Secure storage and transmission of authentication credentials.
+
+Choose JWT or session-based authentication based on the application architecture. Explain the choice before implementing it.
+
+If using JWT, validate tokens on the backend and use an appropriate secure storage strategy. Do not treat a token stored in an easily accessible browser location as automatically secure.
+
+## Authorization requirements
+
+Create reusable authorization middleware for:
+
+- Authentication.
+- Role verification.
+- Permission verification.
+- Hospital assignment verification.
+- Patient ownership verification.
+- Resource-level access verification.
+
+Return:
+- HTTP 401 when authentication is missing or invalid.
+- HTTP 403 when a user is authenticated but lacks permission.
+- Appropriate not-found responses when needed to avoid disclosing restricted resource existence.
+
+Never rely on frontend role checks alone.
+
+Never trust a role, user ID, patient ID, or hospital ID supplied by the browser without validating it on the backend.
+
+Do not allow public registration to create Super Admin or other privileged accounts.
+
+---
+
+# 5. MULTI-HOSPITAL ARCHITECTURE
+
+The system must support multiple hospitals.
+
+For example:
+- Hospital A.
+- Hospital B.
+- Hospital C.
+
+Each hospital must have its own authorized employees, departments, operational records, and financial records.
+
+Use a shared MySQL database with appropriate hospital-specific relationships unless a different architecture is justified.
+
+## Tenant-isolation requirements
+
+- Every hospital-specific operational record must be linked to the correct hospital.
+- Hospital employees must only access records permitted for their hospital assignment.
+- A Hospital Manager must not automatically access another hospital's private operational information.
+- The backend must validate hospital membership and permissions on every relevant request.
+- A hospital ID in a URL must never be sufficient to grant access.
+- Financial records must remain associated with the correct hospital.
+- Hospital-specific reports must not accidentally include another hospital's data.
+- Cross-hospital patient information sharing must follow the access-control rules described below.
+
+Design and test the application against insecure direct object reference (IDOR) vulnerabilities and other tenant-isolation failures.
+
+---
+
+# 6. PATIENT REGISTRATION AND UNIQUE IDENTIFICATION
+
+Build a reliable patient registration system.
+
+## New patient registration
+
+Collect appropriate information, such as:
+
+- Unique patient number.
+- Full name.
+- Date of birth.
+- Sex or other legally required demographic information.
+- Phone number.
+- Email address, when available.
+- Address.
+- Emergency contact.
+- Guardian or authorized representative information, when applicable.
+- Relevant identity information, where legally permitted.
+- Registration date.
+- Record status.
+
+Only collect information necessary for legitimate healthcare and operational purposes.
+
+Do not make a patient's name the unique identifier.
+
+Generate a unique patient number and enforce uniqueness in the database.
+
+## Returning patient identification
+
+When a patient arrives, the Receptionist must be able to search using approved identifiers, such as:
+
+- Unique patient number.
+- National identification number, where legally permitted.
+- Phone number.
+- Other approved identifying information.
+
+The system must search existing records before offering to register a new patient.
+
+If the patient is found:
+1. Retrieve the existing patient profile.
+2. Display the information permitted for the current user.
+3. Confirm the patient's identity.
+4. Show relevant previous visits and available history according to permissions.
+5. Create a new visit linked to the existing patient record.
+6. Do not create a duplicate patient.
+
+If the patient is not found:
+1. Allow the Receptionist to register a new patient.
+2. Generate a unique patient number.
+3. Save the patient profile.
+4. Create the appropriate visit when the patient is received.
+
+If multiple records appear to match:
+- Request additional identity verification.
+- Do not automatically select or merge records.
+- Provide a controlled duplicate-review process.
+
+If the patient's identity is uncertain, preserve the uncertainty and use an authorized verification process rather than silently merging records.
+
+---
+
+# 7. CRITICAL REQUIREMENT: RETURNING PATIENT HISTORY
+
+**Whenever a previously registered patient returns, the system must retrieve their existing patient information and available historical records rather than treating them as a completely new patient.**
+
+The patient profile must remain connected to the patient's historical records across visits.
+
+When an authorized healthcare professional opens the patient record, the system should display relevant historical information, such as:
+
+- Previous hospital visits.
+- Previous appointments.
+- Previous diagnoses.
+- Clinical notes that the user is authorized to access.
+- Recorded allergies.
+- Existing medical conditions.
+- Previous laboratory requests.
+- Previously released laboratory results.
+- Prescriptions and medication history.
+- Previous treatments.
+- Referrals.
+- Hospital admission and discharge history, where applicable.
+- Follow-up instructions.
+- Previous invoices and payments, when the user has financial permissions.
+
+Historical information must be organized by date, hospital, visit, and record type where appropriate.
+
+## Do not overwrite history
+
+When a patient returns:
+
+- Do not replace previous visit information with new information.
+- Do not delete old laboratory results when recording new results.
+- Do not replace old prescriptions with new prescriptions.
+- Do not erase previous diagnoses when a new diagnosis is recorded.
+- Do not combine separate visits into one visit.
+- Do not create a duplicate patient just because the patient attends another department or returns on another date.
+
+Instead, create a new visit record linked to the existing patient.
+
+For example:
+
+Patient number: `PAT-000123`
+
+Patient profile:
+- One patient identity record.
+
+Visit history:
+- Visit 1: 5 January.
+- Visit 2: 18 February.
+- Visit 3: 9 March.
+
+Each visit must contain its own appropriate consultation, laboratory requests, prescriptions, invoices, and other records.
+
+The patient's history must remain available according to the user's permissions and applicable retention rules.
+
+---
+
+# 8. CROSS-HOSPITAL PATIENT INFORMATION SHARING
+
+The system must support patients who visit more than one hospital.
+
+For example:
+
+1. A patient visits Hospital A.
+2. Hospital A registers the patient and records a consultation.
+3. The patient undergoes laboratory testing.
+4. The patient later visits Hospital B.
+5. Hospital B identifies the same patient.
+6. If cross-hospital sharing is authorized and legally permitted, the system makes available the relevant shared patient history to appropriately authorized staff.
+
+The system must distinguish between identifying the same patient and granting access to that patient's records.
+
+**Identifying the patient must not automatically grant every hospital unrestricted access to every medical record.**
+
+## Access-control rules
+
+- Verify the patient's identity.
+- Apply applicable consent, privacy, and legal requirements.
+- Restrict access to authorized hospitals and personnel.
+- Support revocation or changes to access where applicable.
+- Record relevant access events in audit logs.
+- Protect especially sensitive information through appropriate additional controls.
+- Make unavailable records clearly distinguishable from records that do not exist, without revealing protected information to unauthorized users.
+- Allow a properly authorized emergency-access process where legally appropriate, with justification and auditing.
+
+Design the application so cross-hospital sharing can be implemented through an appropriate authorization model rather than assuming all hospitals automatically share all records.
+
+## Database considerations
+
+Design appropriate relationships for:
+
+- Global patient identity, if the legal and privacy model permits it.
+- Hospital-specific patient registration.
+- Hospital-specific visits.
+- Clinical records.
+- Authorized cross-hospital sharing.
+- Consent or other legal authorization records, where required.
+- Access logs.
+
+If global patient identity cannot appropriately be shared, design a secure identity-matching and record-linking process consistent with applicable requirements.
+
+Do not assume that the database alone can determine whether sharing is legally authorized.
+
+---
+
+# 9. COMPLETE PATIENT JOURNEY: HOSPITAL ENTRY TO EXIT
+
+Implement the following patient workflow.
+
+## STEP 1: Patient arrives
+
+The patient arrives at the hospital.
+
+The Receptionist opens the reception dashboard.
+
+The system records arrival and identifies whether the patient is expected for an appointment or is a walk-in patient.
+
+Emergency patients must be directed to the appropriate emergency process without unnecessary administrative delays.
+
+## STEP 2: Search for or register the patient
+
+The Receptionist searches for the patient.
+
+If the patient already exists:
+- Retrieve the existing patient profile.
+- Verify identity.
+- Show authorized historical information.
+- Create a new visit for the current attendance.
+
+If the patient is new:
+- Register the patient.
+- Generate a unique patient number.
+- Save the patient profile.
+- Create a new visit.
+
+Prevent duplicate patient profiles.
+
+## STEP 3: Register the visit
+
+Create a visit record linked to:
+- Patient.
+- Hospital.
+- Visit date and time.
+- Appointment, if applicable.
+- Visit type.
+- Responsible department.
+- Initial status.
+
+The patient profile and visit must be separate database records.
+
+## STEP 4: Triage
+
+An authorized triage professional records the patient's initial assessment.
+
+Possible information:
+- Vital signs.
+- Symptoms.
+- Pain assessment.
+- Relevant medical history.
+- Allergies.
+- Triage priority.
+- Immediate care requirements.
+
+Emergency cases must follow the hospital's emergency protocol.
+
+## STEP 5: Doctor consultation
+
+The doctor opens the patient's current visit.
+
+The doctor can review relevant historical information they are authorized to access.
+
+The doctor records:
+- Presenting complaint.
+- History of present illness.
+- Relevant medical history.
+- Examination findings.
+- Clinical assessment.
+- Diagnosis.
+- Treatment plan.
+- Follow-up instructions.
+
+The system must record the responsible clinician and relevant timestamps.
+
+## STEP 6: Determine whether tests are required
+
+The doctor decides whether laboratory tests or other investigations are necessary.
+
+If tests are not required, the workflow can proceed to treatment.
+
+If tests are required:
+1. Create a laboratory request.
+2. Link the request to the patient and current visit.
+3. Record the requested tests.
+4. Send the request to the laboratory queue.
+
+A laboratory request must not be created without the required authorization.
+
+## STEP 7: Laboratory processing
+
+The laboratory staff:
+1. Receive the request.
+2. Confirm the patient and requested tests.
+3. Collect or receive the specimen.
+4. Record specimen identification.
+5. Process the specimen.
+6. Record results.
+7. Validate results when authorized.
+8. Release approved results.
+9. Record critical-result alerts when necessary.
+
+Maintain result history and audit trails.
+
+Unvalidated results must not be presented as validated final results.
+
+## STEP 8: Doctor reviews results
+
+The doctor receives a notification or sees the completed results in the patient record.
+
+The doctor reviews the results and records the clinical interpretation and any changes to the treatment plan.
+
+If additional tests are needed, the doctor can create new authorized requests.
+
+If tests are not required or are already complete, continue to treatment.
+
+## STEP 9: Treatment and prescription
+
+The doctor records the treatment plan.
+
+If medication is required:
+1. Create a prescription.
+2. Link it to the patient and current visit.
+3. Record medicine, dosage, frequency, duration, and other required instructions.
+4. Send the prescription to the pharmacy queue.
+
+If medication is not required, the patient may continue to the next step.
+
+Only authorized clinicians may create or modify prescriptions according to the permission rules.
+
+## STEP 10: Pharmacy dispensing
+
+The Pharmacist:
+1. Opens the prescription.
+2. Confirms its validity.
+3. Checks stock and expiration dates.
+4. Records the quantity dispensed.
+5. Updates inventory using appropriate database transactions.
+6. Records partial or complete dispensing.
+7. Provides authorized dispensing information.
+
+The system must prevent invalid stock deductions and maintain inventory history.
+
+If medication is unavailable, record the appropriate status and follow the hospital's approved process.
+
+## STEP 11: Billing and manual payments
+
+Create an invoice for applicable services.
+
+Possible charges include:
+- Consultation.
+- Laboratory tests.
+- Procedures.
+- Medicines.
+- Other authorized services.
+
+The Accountant can:
+- Review invoice items.
+- Record manual payments.
+- Record partial payments.
+- Calculate the outstanding balance.
+- Issue receipts.
+- Record authorized refunds and adjustments.
+
+Supported payment methods may include cash, bank transfer, or another manually recorded method.
+
+**Do not integrate online payment gateways.**
+
+A payment record must not be treated as proof of an online transaction. It represents a payment recorded and verified through the hospital's approved manual process.
+
+Clinical care and emergency treatment must not be unnecessarily delayed by financial processing.
+
+## STEP 12: Doctor completes the care plan
+
+The doctor ensures that:
+- Relevant results have been reviewed.
+- The treatment plan is documented.
+- Required prescriptions are recorded.
+- Follow-up instructions are documented.
+- The patient receives appropriate instructions.
+
+## STEP 13: Discharge or visit completion
+
+Before completing the visit, verify the requirements applicable to that type of visit.
+
+These may include:
+- Clinical documentation.
+- Review of required test results.
+- Treatment instructions.
+- Prescription instructions.
+- Follow-up plan.
+- Required administrative checks.
+
+Do not force every patient to complete every workflow step. Some patients do not need laboratory tests, prescriptions, or additional procedures.
+
+An authorized user completes the visit according to hospital policy.
+
+## STEP 14: Patient exits
+
+The system records:
+- Visit completion or discharge time.
+- Responsible staff member.
+- Final visit status.
+- Follow-up requirements.
+- Relevant discharge instructions.
+- Outstanding administrative items where appropriate.
+
+The patient can leave the hospital.
+
+The visit becomes part of the patient's historical record.
+
+The patient's profile remains available for future visits.
+
+---
+
+# 10. VISIT STATUS AND INDEPENDENT WORKFLOW STATUS
+
+Create clear status management.
+
+Possible visit statuses include:
+
+- ARRIVED
+- REGISTERED
+- AWAITING_TRIAGE
+- TRIAGED
+- WAITING_FOR_CONSULTATION
+- CONSULTATION_IN_PROGRESS
+- AWAITING_TESTS
+- RESULTS_PENDING
+- RESULTS_REVIEW
+- TREATMENT_IN_PROGRESS
+- AWAITING_DISCHARGE
+- DISCHARGED
+- VISIT_COMPLETED
+- CANCELLED
+
+Define valid transitions and enforce them on the backend.
+
+These statuses are examples. Refine them during database and workflow design.
+
+Do not use one status field to represent the entire hospital workflow.
+
+Maintain separate statuses for:
+
+### Visit
+Tracks the patient's overall visit progress.
+
+### Appointment
+Tracks scheduled, confirmed, cancelled, and completed appointments.
+
+### Laboratory
+Tracks requested, collected, processing, validated, released, and cancelled tests as appropriate.
+
+### Prescription
+Tracks prescribed, pending dispensing, partially dispensed, dispensed, cancelled, or other valid states.
+
+### Invoice
+Tracks draft, issued, partially paid, paid, voided, or other appropriate states.
+
+### Payment
+Tracks the recorded payment's verification and processing status.
+
+### Discharge
+Tracks the applicable discharge process.
+
+Define which transitions are allowed and which roles can perform them.
+
+---
+
+# 11. DATABASE DESIGN
+
+Design a normalized MySQL database.
+
+Before creating tables, explain the entities, relationships, primary keys, foreign keys, constraints, and indexes.
+
+The following is an initial list of suggested tables. Add, remove, or combine tables when justified by the final design.
+
+## Identity and authorization
+- users
+- roles
+- permissions
+- user_roles
+- role_permissions
+- user_permissions, if needed
+- hospital_user_assignments
+- login_attempts
+- password_reset_tokens or an equivalent secure reset mechanism
+
+## Hospital management
+- hospitals
+- departments
+- employees
+- hospital_settings
+
+## Patient identity and registration
+- patients
+- patient_contacts
+- patient_identifiers, if appropriate
+- guardians
+- patient_hospital_registrations
+- patient_hospital_access or an equivalent authorization model
+- patient_consents, where required
+
+## Visits and appointments
+- appointments
+- visits
+- triage_assessments
+- clinical_notes
+- diagnoses
+- treatment_plans
+- referrals
+- admissions
+- discharge_records
+
+## Laboratory
+- laboratory_test_types
+- lab_test_requests
+- lab_specimens
+- lab_results
+- lab_result_history
+- lab_result_validations
+
+## Pharmacy
+- medicines
+- medicine_batches
+- pharmacy_stock_movements
+- prescriptions
+- prescription_items
+- dispensing_records
+- suppliers
+- purchase_orders
+- purchase_order_items
+
+## Billing
+- invoices
+- invoice_items
+- payments
+- payment_allocations
+- refunds
+- financial_adjustments
+- receipts
+
+## Supporting functions
+- notifications
+- audit_logs
+- system_settings
+
+These are proposed entities, not a requirement to create every table without analysis. Explain the purpose of each final table and avoid unnecessary duplication.
+
+## Required database principles
+
+1. Use appropriate data types.
+2. Use primary and foreign keys.
+3. Add appropriate unique constraints.
+4. Add indexes for common searches.
+5. Use `DECIMAL` for monetary amounts.
+6. Use appropriate date and timestamp types.
+7. Enforce referential integrity.
+8. Use transactions for related financial, inventory, and workflow operations.
+9. Prevent unauthorized cross-hospital relationships.
+10. Preserve historical information and required audit trails.
+11. Avoid storing passwords in plaintext.
+12. Avoid unnecessary duplication of patient identity information.
+13. Separate patient profiles from visits.
+14. Separate clinical and financial records.
+15. Design for secure patient history retrieval.
+
+Do not automatically delete historical clinical or financial records when a user account, employee, hospital assignment, or other related record becomes inactive.
+
+Use appropriate retention, archival, correction, and deletion policies consistent with applicable law.
+
+---
+
+# 12. REQUIRED API DESIGN
+
+Use RESTful endpoints with consistent naming and response formats.
+
+Examples of possible endpoints include:
+
+## Authentication
+- POST `/api/auth/login`
+- POST `/api/auth/logout`
+- GET `/api/auth/me`
+- POST `/api/auth/forgot-password`
+- POST `/api/auth/reset-password`
+
+## Hospitals
+- GET `/api/hospitals`
+- POST `/api/hospitals`
+- GET `/api/hospitals/:hospitalId`
+- PUT `/api/hospitals/:hospitalId`
+
+## Patients
+- POST `/api/patients`
+- GET `/api/patients/search`
+- GET `/api/patients/:patientId`
+- PUT `/api/patients/:patientId`
+- GET `/api/patients/:patientId/history`
+
+## Visits
+- POST `/api/visits`
+- GET `/api/visits/:visitId`
+- GET `/api/patients/:patientId/visits`
+- PATCH `/api/visits/:visitId/status`
+
+## Appointments
+- POST `/api/appointments`
+- GET `/api/appointments`
+- GET `/api/appointments/:appointmentId`
+- PATCH `/api/appointments/:appointmentId`
+
+## Triage and consultation
+- POST `/api/visits/:visitId/triage`
+- POST `/api/visits/:visitId/clinical-notes`
+- POST `/api/visits/:visitId/diagnoses`
+- POST `/api/visits/:visitId/treatment-plans`
+
+## Laboratory
+- POST `/api/visits/:visitId/lab-requests`
+- GET `/api/lab-requests`
+- POST `/api/lab-requests/:requestId/specimens`
+- POST `/api/lab-requests/:requestId/results`
+- POST `/api/lab-results/:resultId/validate`
+- POST `/api/lab-results/:resultId/release`
+
+## Pharmacy
+- GET `/api/prescriptions`
+- POST `/api/prescriptions`
+- POST `/api/prescriptions/:prescriptionId/dispense`
+- GET `/api/pharmacy/inventory`
+
+## Billing
+- POST `/api/invoices`
+- GET `/api/invoices/:invoiceId`
+- POST `/api/invoices/:invoiceId/payments`
+- POST `/api/payments/:paymentId/receipt`
+- POST `/api/payments/:paymentId/refunds`
+
+## Reports
+- GET `/api/reports/appointments`
+- GET `/api/reports/patients`
+- GET `/api/reports/laboratory`
+- GET `/api/reports/pharmacy`
+- GET `/api/reports/finance`
+
+Treat these as examples. Finalize endpoint names and methods during architecture design.
+
+For every endpoint, specify:
+- Purpose.
+- HTTP method.
+- Required role or permission.
+- Required hospital authorization.
+- Required ownership checks.
+- Request validation.
+- Expected response.
+- Possible error responses.
+
+Never expose sensitive information through unrestricted search endpoints.
+
+---
+
+# 13. FRONTEND AND DASHBOARD DESIGN
+
+Create a professional healthcare interface.
+
+## General design requirements
+- Responsive layout.
+- Sidebar navigation.
+- Top navigation bar.
+- User profile menu.
+- Role-specific navigation.
+- Dashboard cards.
+- Search and filter controls.
+- Paginated tables.
+- Forms with validation.
+- Loading states.
+- Empty states.
+- Error messages.
+- Confirmation dialogs for important actions.
+- Notifications.
+- Accessible labels and keyboard navigation.
+- Clear typography and consistent spacing.
+
+Use a professional, calm healthcare visual style.
+
+Avoid unnecessarily crowded screens.
+
+## Role-specific dashboards
+
+Create separate dashboards for:
+
+1. Super Admin.
+2. Hospital Manager.
+3. Receptionist.
+4. Pharmacist.
+5. Laboratory Technician.
+6. Accountant.
+7. Patient.
+
+The frontend must show only the appropriate navigation and controls for the logged-in user's permissions.
+
+However, hiding a button is not security. The backend must enforce the same permissions.
+
+## Patient history interface
+
+Provide a patient history page that displays authorized records in a clear timeline or organized sections.
+
+Possible sections:
+- Patient overview.
+- Previous visits.
+- Medical history.
+- Diagnoses.
+- Laboratory results.
+- Prescriptions.
+- Treatments.
+- Referrals.
+- Admissions and discharges.
+- Appointments.
+- Financial history, only for users with appropriate permission.
+
+Clearly distinguish historical information from information recorded during the current visit.
+
+Show dates, responsible departments, relevant hospital information, and record statuses when appropriate.
+
+---
+
+# 14. BACKEND PROJECT STRUCTURE
+
+Use a clear and maintainable folder structure.
+
+A possible starting structure is:
+
+```text
+hospital-management-system/
+│
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   ├── super-admin/
+│   │   │   ├── hospital-manager/
+│   │   │   ├── receptionist/
+│   │   │   ├── pharmacist/
+│   │   │   ├── laboratory/
+│   │   │   ├── accountant/
+│   │   │   └── patient/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── context/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+│
+├── server/
+│   ├── config/
+│   │   └── database.js
+│   ├── middleware/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── validate.js
+│   │   └── errorHandler.js
+│   ├── routes/
+│   ├── controllers/
+│   ├── services/
+│   ├── validators/
+│   ├── utils/
+│   ├── migrations/
+│   ├── seeds/
+│   ├── app.js
+│   ├── server.js
+│   ├── .env.example
+│   └── package.json
+│
+├── docs/
+│   ├── requirements.md
+│   ├── architecture.md
+│   ├── database-design.md
+│   └── api-documentation.md
+│
+└── README.md
+```
+
+Adjust the structure as needed. Do not create unnecessary files or abstractions.
+
+Use parameterized SQL queries through `mysql2` rather than concatenating untrusted values into SQL.
+
+Use environment variables for secrets and database configuration.
+
+Do not commit actual secrets or production credentials to Git.
+
+---
+
+# 15. BILLING AND MANUAL PAYMENT MANAGEMENT
+
+Implement a reliable billing system without online payment gateways.
+
+## Features
+- Create invoices for authorized services.
+- Add invoice items.
+- Calculate totals accurately.
+- Record manual payments.
+- Support partial payments.
+- Calculate remaining balances.
+- Generate receipts.
+- Track payment methods.
+- Record transaction references when applicable.
+- Manage authorized refunds.
+- Record authorized financial adjustments.
+- Maintain transaction history.
+- Generate financial reports.
+
+Use appropriate monetary precision.
+
+Use database transactions to ensure that invoice and payment operations remain consistent.
+
+Do not treat an invoice as a payment.
+
+Do not treat a payment record as proof of a bank transfer unless the required verification process has occurred.
+
+Do not allow ordinary users to delete financial transactions.
+
+Corrections must follow an authorized, auditable process.
+
+---
+
+# 16. PHARMACY AND INVENTORY MANAGEMENT
+
+Implement:
+
+- Medicine registration.
+- Medicine categories.
+- Medicine batches.
+- Stock quantities.
+- Expiration dates.
+- Suppliers.
+- Purchase orders.
+- Stock receipts.
+- Stock movements.
+- Low-stock alerts.
+- Expired-stock alerts.
+- Prescription dispensing.
+- Partial dispensing.
+- Inventory reports.
+
+Every stock change must have an appropriate reason and audit trail.
+
+Use database transactions when dispensing medicine so the system cannot accidentally record a successful dispensing while failing to update inventory.
+
+Prevent invalid negative stock unless an explicitly authorized and clinically appropriate workflow permits it.
+
+Do not dispense expired medicine.
+
+Keep pharmacy inventory hospital-specific unless an explicitly designed and authorized stock-sharing process is introduced.
+
+---
+
+# 17. LABORATORY MANAGEMENT
+
+Implement:
+
+- Laboratory test catalogue.
+- Test requests.
+- Specimen registration.
+- Specimen status tracking.
+- Test processing status.
+- Result recording.
+- Result validation.
+- Result release.
+- Critical-result alerts.
+- Rejected specimen handling.
+- Recollection requests.
+- Result history.
+- Laboratory reports.
+
+Maintain a reliable connection between the patient, visit, request, specimen, and result.
+
+Use appropriate permissions for result creation, validation, and release.
+
+Do not silently replace a released result. Corrections must preserve the original result and the required audit trail.
+
+Only authorized users may access sensitive laboratory information.
+
+---
+
+# 18. SECURITY, PRIVACY, AND AUDITING
+
+Implement security throughout the application, not only during the final phase.
+
+## Required protections
+- Secure authentication.
+- Strong password hashing.
+- Server-side authorization.
+- Input validation.
+- Parameterized SQL queries.
+- Rate limiting.
+- Appropriate CORS configuration if separate origins require it.
+- Secure cookie settings if cookie-based sessions are used.
+- Protection against common injection vulnerabilities.
+- Appropriate protection against cross-site scripting.
+- CSRF protection where applicable to the chosen authentication architecture.
+- Safe error handling.
+- Environment-variable management.
+- Secure session or token expiration.
+- Restricted access to sensitive files and endpoints.
+- Prevention of unauthorized privilege escalation.
+- Tenant isolation.
+- Patient ownership checks.
+- Appropriate audit logging.
+- Backup and recovery planning.
+
+## Audit logs
+
+Record important actions, such as:
+- Login and logout events.
+- Failed login attempts.
+- Patient registration and identity corrections.
+- Sensitive record access where required.
+- Clinical record creation or correction.
+- Laboratory result validation and release.
+- Prescription creation and dispensing.
+- Financial transactions and adjustments.
+- Permission changes.
+- Hospital assignment changes.
+- Authorized emergency access.
+
+Include appropriate information such as:
+- Acting user.
+- Action.
+- Affected record.
+- Timestamp.
+- Relevant hospital.
+- Outcome.
+- Justification when required.
+
+Avoid unnecessarily storing passwords, tokens, or complete sensitive clinical content in audit logs.
+
+Make audit records resistant to unauthorized modification.
+
+## Privacy
+
+Apply data minimization, appropriate retention rules, access restrictions, secure backups, and authorized disclosure procedures.
+
+Do not claim the application is legally compliant merely because security features exist. Identify the applicable healthcare, privacy, and data-protection requirements for the deployment jurisdiction and explain which requirements need legal or compliance review.
+
+---
+
+# 19. NOTIFICATIONS AND REPORTS
+
+Implement a notification system for events such as:
+
+- Appointment reminders.
+- Appointment changes.
+- Laboratory results ready for review.
+- Critical laboratory results.
+- Low pharmacy stock.
+- Expiring medicine batches.
+- Outstanding invoices.
+- Follow-up appointments.
+- Important administrative alerts.
+
+Notifications must not reveal sensitive patient information to unauthorized recipients.
+
+Reports may include:
+- Patient registration statistics.
+- Appointment statistics.
+- Visit completion statistics.
+- Waiting-time statistics.
+- Laboratory activity.
+- Pharmacy inventory.
+- Prescription dispensing.
+- Invoice totals.
+- Recorded payments.
+- Outstanding balances.
+- Hospital-specific operational reports.
+
+Apply role-based and hospital-specific restrictions to every report.
+
+---
+
+# 20. TESTING REQUIREMENTS
+
+Use Postman for API testing and an appropriate automated testing framework for backend and frontend tests.
+
+Test successful cases, invalid input, authorization failures, and unexpected conditions.
+
+## Authentication tests
+- Valid login.
+- Invalid password.
+- Inactive account.
+- Expired token or session.
+- Unauthorized API request.
+- Rate limiting.
+
+## Patient management tests
+- Register a new patient.
+- Search for an existing patient.
+- Retrieve patient history.
+- Update permitted patient details.
+- Reject invalid input.
+- Prevent duplicate registration.
+- Handle multiple possible identity matches.
+
+## Returning-patient tests
+1. Register a patient.
+2. Record the first visit.
+3. Add consultation notes, laboratory results, and a prescription.
+4. Register a second visit for the same patient.
+5. Confirm that the same patient profile is reused.
+6. Confirm that the second visit is a new record.
+7. Confirm that the first visit remains unchanged.
+8. Confirm that authorized users can retrieve relevant historical records.
+9. Confirm that unauthorized users cannot access restricted records.
+
+## Cross-hospital tests
+- A hospital can access its authorized records.
+- A hospital cannot access another hospital's restricted records.
+- Authorized cross-hospital sharing works as designed.
+- Unauthorized sharing is rejected.
+- Changing a hospital ID in a request does not bypass authorization.
+- Patient identity matching does not automatically grant clinical-record access.
+
+## Role-permission tests
+- Receptionist cannot modify prescriptions.
+- Pharmacist cannot modify clinical diagnoses.
+- Laboratory Technician cannot perform unauthorized financial operations.
+- Accountant cannot modify restricted clinical notes.
+- Patient cannot access another patient's records.
+- Hospital Manager cannot automatically access every hospital.
+- Super Admin privileges are explicitly controlled.
+
+## Clinical workflow tests
+- A visit can proceed without laboratory tests when they are unnecessary.
+- A visit can proceed without a prescription when medication is unnecessary.
+- Laboratory results cannot be treated as validated before the required validation.
+- Discharge or completion follows the appropriate workflow.
+- Emergency handling does not depend on unnecessary administrative steps.
+
+## Pharmacy tests
+- Valid dispensing updates stock correctly.
+- Expired medicines cannot be dispensed.
+- Partial dispensing is recorded accurately.
+- Concurrent stock operations do not produce incorrect quantities.
+
+## Financial tests
+- Invoice totals are correct.
+- Partial payments update the balance correctly.
+- Receipts match recorded payments.
+- Unauthorized refunds are rejected.
+- Financial history cannot be silently deleted.
+- Payment recording does not accidentally duplicate a transaction.
+
+## Security tests
+- SQL injection attempts are safely handled.
+- Unauthorized requests are rejected.
+- Patient ownership checks work.
+- Tenant isolation works.
+- Sensitive information is not returned to unauthorized users.
+- Invalid status transitions are rejected.
+
+---
+
+# 21. DEVELOPMENT PHASES
+
+Build the application in the following order.
+
+## Phase 1: Requirements and architecture
+Produce:
+- Final requirements.
+- User-role descriptions.
+- Role-permission matrix.
+- Hospital architecture.
+- Patient journey diagram or structured flow.
+- Returning-patient workflow.
+- Cross-hospital access model.
+- Initial API design.
+- Main architectural decisions.
+
+Do not start writing all application code yet.
+
+## Phase 2: Database design
+Produce:
+- Entity relationship diagram.
+- Final table list.
+- Table fields and data types.
+- Primary keys.
+- Foreign keys.
+- Unique constraints.
+- Indexes.
+- Relationship explanations.
+- SQL schema or migrations.
+- Seed-data strategy.
+- Patient identity and history model.
+- Hospital-isolation model.
+
+Explain how patient profiles, visits, and historical records are linked.
+
+## Phase 3: Project setup
+Provide:
+- Folder structure.
+- Installation commands.
+- React setup.
+- Express setup.
+- MySQL connection.
+- Environment configuration.
+- Basic server and frontend.
+- A test proving the application runs.
+
+## Phase 4: Authentication
+Build:
+- Login.
+- Logout.
+- Password hashing.
+- Session or token handling.
+- Authentication middleware.
+- Error handling.
+- Authentication tests.
+
+## Phase 5: Authorization
+Build:
+- Role and permission management.
+- Hospital assignment checks.
+- Patient ownership checks.
+- Protected API routes.
+- Authorization tests.
+
+## Phase 6: Dashboards
+Build the seven dashboards with role-specific navigation and permissions.
+
+## Phase 7: Patient management
+Build:
+- Patient registration.
+- Patient search.
+- Identity verification.
+- Returning-patient identification.
+- Duplicate prevention.
+- Patient profile.
+- Patient history retrieval.
+- New visit creation.
+
+Test that returning patients reuse the existing patient profile.
+
+## Phase 8: Appointments and queues
+Build:
+- Appointment scheduling.
+- Arrival registration.
+- Walk-in visits.
+- Reception queues.
+- Triage queues.
+- Appointment status management.
+
+## Phase 9: Clinical management
+Build:
+- Triage.
+- Consultations.
+- Clinical notes.
+- Diagnoses.
+- Treatment plans.
+- Referrals.
+- Follow-up instructions.
+
+## Phase 10: Laboratory
+Build requests, specimens, result entry, validation, release, history, and notifications.
+
+## Phase 11: Pharmacy
+Build medicine management, batches, stock movements, prescriptions, dispensing, and inventory alerts.
+
+## Phase 12: Billing
+Build invoices, manual payments, partial payments, receipts, refunds, and financial reports.
+
+## Phase 13: Discharge and visit completion
+Build the visit completion workflow and preserve the final visit history.
+
+## Phase 14: Reports and notifications
+Build role-specific reports, alerts, reminders, and notifications.
+
+## Phase 15: Security and quality assurance
+Perform authorization tests, tenant-isolation tests, patient-history tests, financial tests, workflow tests, backup testing, and security hardening.
+
+## Phase 16: Deployment preparation
+Explain how to prepare the application for production, including:
+- Environment configuration.
+- Database backups.
+- HTTPS.
+- Secure secrets.
+- Database migrations.
+- Logging and monitoring.
+- Error handling.
+- Recovery procedures.
+- Deployment configuration.
+
+Do not expose development credentials or secrets in production.
+
+---
+
+# 22. TEACHING AND IMPLEMENTATION RULES
+
+Follow these rules throughout development.
+
+1. Use simple English.
+2. Explain one phase at a time.
+3. Start with the requirements and database design.
+4. Show the folder structure before writing implementation files.
+5. Provide exact installation commands.
+6. Give complete code for the files required in the current phase.
+7. State each file's exact path.
+8. Explain the important parts of the code.
+9. Explain how the frontend communicates with the backend.
+10. Explain how the backend communicates with MySQL.
+11. Explain how authorization works.
+12. Provide Postman tests where appropriate.
+13. Show the expected output.
+14. Explain common errors and their solutions.
+15. Do not skip essential implementation details.
+16. Do not claim a feature works without implementing or testing it.
+17. Do not create all dashboards before authentication and authorization are properly designed.
+18. Do not use mock data as a substitute for required backend functionality.
+19. Avoid unnecessary classes and complicated abstractions.
+20. Keep the code organized, readable, and maintainable.
+21. Use appropriate validation on both the frontend and backend.
+22. Use database transactions for operations that must succeed or fail together.
+23. Do not proceed to a major phase until the current phase's requirements and tests are clear.
+24. Clearly identify incomplete features and remaining work.
+25. Explain any important trade-offs or assumptions before implementing them.
+
+When providing code, identify which commands run in the project root, which run in the client directory, and which run in the server directory.
+
+Do not omit necessary imports, route registrations, middleware, environment variables, or package installation commands.
+
+---
+
+# 23. FINAL ACCEPTANCE SCENARIO
+
+The application will not be considered complete until the following scenario works end to end.
+
+1. The Super Admin creates Hospital A and Hospital B.
+2. The Super Admin assigns a Hospital Manager to each hospital.
+3. The Hospital Manager creates authorized employee accounts.
+4. A Receptionist at Hospital A registers a new patient.
+5. The system generates a unique patient number.
+6. The Receptionist creates the patient's first visit.
+7. The patient completes triage and a doctor consultation.
+8. The doctor requests laboratory tests.
+9. The laboratory processes, validates, and releases the results.
+10. The doctor reviews the results and creates a prescription.
+11. The Pharmacist dispenses the prescribed medicine and records the stock movement.
+12. The Accountant creates the applicable invoice, records a manual payment, and issues a receipt.
+13. The authorized staff complete the visit and record discharge or visit completion.
+14. The patient leaves the hospital.
+15. The patient later returns to Hospital A.
+16. The Receptionist searches for the patient using an approved identifier.
+17. The system retrieves the existing patient profile and available permitted history.
+18. The Receptionist verifies the identity and creates a second visit linked to the same patient.
+19. The first visit remains unchanged.
+20. Authorized clinicians can review relevant historical records when treating the patient.
+21. The second visit creates its own clinical, laboratory, prescription, and financial records as needed.
+22. If the patient later visits Hospital B, the system identifies the patient using the approved identity-matching process.
+23. Hospital B can access shared historical information only if the relevant authorization, privacy, and legal requirements are satisfied.
+24. If Hospital B is not authorized to access a particular record, the backend denies access.
+25. Users cannot bypass permissions by changing URLs, patient IDs, hospital IDs, or frontend state.
+26. All important actions are recorded in the audit system according to the audit policy.
+27. All seven roles can use their authorized dashboards.
+28. The application works on desktop, tablet, and mobile devices.
+29. No online payment gateway is integrated.
+30. The important workflows pass their defined tests.
+
+---
+
+# 24. YOUR FIRST TASK
+
+**Begin with Phase 1 and Phase 2 only. Do not generate the entire application yet.**
+
+First, deliver:
+
+1. A clear architecture overview.
+2. A complete role-permission matrix.
+3. A multi-hospital architecture and access-control explanation.
+4. The patient journey from arrival to exit.
+5. The returning-patient identification and history-retrieval design.
+6. The cross-hospital patient-sharing and authorization model.
+7. An entity relationship diagram.
+8. A complete proposed MySQL database schema with field names, data types, keys, constraints, and indexes.
+9. An explanation of how patient profiles, hospital registrations, visits, and historical records relate.
+10. A proposed REST API structure.
+11. Security considerations for patient history, tenant isolation, and clinical records.
+12. Acceptance tests for the architecture and database design.
+
+Explain every important decision in simple English.
+
+Ensure that the database supports the following principle:
+
+**One patient can have many visits, and each visit must remain a separate historical record. When the same patient returns, retrieve the existing patient information, create a new visit, and preserve all previous records. Cross-hospital access must be controlled by explicit authorization and applicable privacy requirements.**
+
+Finish by identifying any important assumptions or decisions that require my approval before implementation begins.
