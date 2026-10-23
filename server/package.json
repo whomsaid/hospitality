@@ -1,0 +1,30 @@
+{
+  "name": "shms-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:apply:phase2": "node scripts/apply-proposed-schema.js",
+    "db:seed:phase2": "node scripts/seed-phase2.js",
+    "test": "NODE_ENV=test vitest run",
+    "lint": "node --check src/**/*.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "morgan": "^1.12.1",
+    "mysql2": "^3.24.6",
+    "uuid": "^11.1.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1",
+    "vitest": "^3.2.7"
+  }
+}
